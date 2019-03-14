@@ -56,6 +56,11 @@ public final class MainActivity extends AppCompatActivity {
     /** Constant to perform a read file request. */
     private static final int READ_REQUEST_CODE = 42;
 
+    /** Min confidence. */
+    private static final double MINCONFIDENCE = 0.45;
+
+    /** Min confidence. */
+    private static final double MINCONFIDENCE0 = 0.6;
     /** Constant to request an image capture. */
     private static final int IMAGE_CAPTURE_REQUEST_CODE = 1;
 
@@ -309,25 +314,33 @@ public final class MainActivity extends AppCompatActivity {
         JsonElement jsonElement = jsonParser.parse(jsonResult);
         String prettyJsonString = gson.toJson(jsonElement);
         textView.setText(prettyJsonString);
-
+        ImageView dog = findViewById(R.id.dog);
+        ImageView cat = findViewById(R.id.cat);
         /*
          * Create a string describing the image type, width and height.
          */
         int width = RecognizePhoto.getWidth(jsonResult);
         int height = RecognizePhoto.getHeight(jsonResult);
         String format = RecognizePhoto.getFormat(jsonResult);
+        String caption = RecognizePhoto.getCaption(jsonResult);
         assert format != null;
         format = format.toUpperCase();
         String description = String.format(Locale.US, "%s (%d x %d)", format, width, height);
-
+        String a = description + caption;
         /*
          * Update the UI to display the string.
          */
-
+        textView.setText(a);
         /*
          * Add code here to show the caption, show or hide the dog and cat icons,
          * and deal with Rick.
          */
+        if (RecognizePhoto.isACat(jsonResult, MINCONFIDENCE)) {
+            cat.setVisibility(View.VISIBLE);
+        }
+        if (RecognizePhoto.isADog(jsonResult, MINCONFIDENCE0)) {
+            dog.setVisibility(View.VISIBLE);
+        }
     }
 
     /** Current bitmap we are working with. */
@@ -416,16 +429,20 @@ public final class MainActivity extends AppCompatActivity {
      */
     void updateCurrentBitmap(final Bitmap setCurrentBitmap, final boolean resetInfo) {
         currentBitmap = setCurrentBitmap;
+        TextView textView = findViewById(R.id.jsonResult);
         ImageView photoView = findViewById(R.id.photoView);
+        ImageView dog = findViewById(R.id.dog);
+        ImageView cat = findViewById(R.id.cat);
         photoView.setImageBitmap(currentBitmap);
         enableOrDisableButtons(true);
 
         // Reset the displayed fields to default values. For you to finish!
-        /*
         if (resetInfo) {
-
+            textView.setText("");
+            photoView.setVisibility(View.GONE);
+            dog.setVisibility(View.GONE);
+            cat.setVisibility(View.GONE);
         }
-        */
     }
 
     /**

@@ -30,6 +30,15 @@ public class RecognizePhotoTest {
     }
 
     /**
+     * Test isRick.
+     */
+    @Test(timeout = RECOGNIZE_TEST_TIMEOUT)
+    public void testIsRick() {
+        for (RecognizePhotoTestInput input : PRECOMPUTED_RESULTS) {
+            Assert.assertEquals("incorrect:", input.isRick, RecognizePhoto.isRick(input.json));
+        }
+    }
+    /**
      * Test height extraction.
      */
     @Test(timeout = RECOGNIZE_TEST_TIMEOUT)

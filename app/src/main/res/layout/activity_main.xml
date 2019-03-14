@@ -117,6 +117,18 @@
 
         </android.support.constraint.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/xyz" />
+
+        <ImageView
+            android:id="@+id/dog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/chuchu" />
+
         <LinearLayout
             android:id="@+id/lightsHolder"
             android:layout_width="match_parent"

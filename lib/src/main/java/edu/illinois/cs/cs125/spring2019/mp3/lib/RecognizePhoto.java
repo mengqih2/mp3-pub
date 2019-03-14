@@ -1,6 +1,7 @@
 package edu.illinois.cs.cs125.spring2019.mp3.lib;
 //import com.google.gson.JsonElement;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 //import com.google.gson.JsonArray;
@@ -135,7 +136,19 @@ public class RecognizePhoto {
      * @return true if you've Rickrolled yourself
      */
     public static boolean isRick(final java.lang.String json) {
-        return true;
+        if (json == null) {
+            return false;
+        }
+        JsonParser parser = new JsonParser();
+        JsonObject result = parser.parse(json).getAsJsonObject();
+        JsonArray categories = result.get("categories").getAsJsonArray();
+        for (int i = 0; i < categories.size(); i++) {
+            JsonElement a = categories.get(i);
+            if (a.getAsJsonObject().get("name").getAsString().equals("people_portrait")) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
